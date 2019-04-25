@@ -35,7 +35,7 @@ def csvToPostgres():
         get_postgres_conn.commit()
 
 
-task1 = PostgresOperator(task_id = 'etl',
+task1 = PostgresOperator(task_id = 'create_table',
                          sql = ("create table if not exists example_table " +
                                 "(" +
                                     "test_id text, " +
@@ -45,7 +45,10 @@ task1 = PostgresOperator(task_id = 'etl',
                          autocommit=True,
                          dag= dag)
 
-task = PythonOperator(task_id='csv_to_db',
+task2 = PythonOperator(task_id='csv_to_db',
                    provide_context=False,
                    python_callable=csvToPostgres,
                    dag=dag)
+
+
+task1 >> task2

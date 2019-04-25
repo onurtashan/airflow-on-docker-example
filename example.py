@@ -25,8 +25,8 @@ dag = DAG('example_python',
 
 def csvToPostgres():
     #Open Postgres Connection
-    pg_hook = PostgresHook(postgres_conn_id='test_db')
-    get_postgres_conn = PostgresHook(postgres_conn_id='test_db').get_conn()
+    pg_hook = PostgresHook(postgres_conn_id='airflow_db')
+    get_postgres_conn = PostgresHook(postgres_conn_id='airflow_db').get_conn()
     curr = get_postgres_conn.cursor("cursor")
     # CSV loading to table.
     with open('/usr/local/airflow/dags/example.csv', 'r') as f:
@@ -41,7 +41,7 @@ task1 = PostgresOperator(task_id = 'create_table',
                                     "test_id text, " +
                                     "test_value text " +
                                 ")"),
-                         postgres_conn_id='test_db', 
+                         postgres_conn_id='airflow_db', 
                          autocommit=True,
                          dag= dag)
 
